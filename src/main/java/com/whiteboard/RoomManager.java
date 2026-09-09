@@ -9,13 +9,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Manages connected users and broadcasts drawing events.
- * Thread-safe — uses ConcurrentHashMap for session storage.
- * 
- * Architecture:
- *   WebSocket connection → RoomManager → broadcasts to all other sessions
- *
- * Future: extend to Map<String, Set<UserSession>> for named rooms.
+ * Manages connected users and broadcasts drawing events. Thread-safe — uses
+ * ConcurrentHashMap for session storage.
  */
 public class RoomManager {
 

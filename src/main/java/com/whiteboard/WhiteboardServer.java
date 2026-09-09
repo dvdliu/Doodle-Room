@@ -13,24 +13,9 @@ import java.net.InetSocketAddress;
 import java.util.UUID;
 
 /**
- * Collaborative Whiteboard WebSocket Server
- *
- * Listens on ws://localhost:8080
- * Clients connect, send draw events as JSON, and receive broadcasts from peers.
- *
- * Message protocol (JSON):
- *   { "type": "DRAW|LINE|CLEAR|CURSOR|USER_JOIN|USER_LEAVE",
- *     "userId": "...",
- *     "username": "...",
- *     "color": "#hex",
- *     "brushSize": 4,
- *     "x": 120.5, "y": 88.0,
- *     "x2": 200.0, "y2": 150.0,   // LINE only
- *     "startStroke": true           // DRAW — pen-down event
- *   }
- *
- * On first connect, clients send a handshake:
- *   { "type": "USER_JOIN", "username": "Alice" }
+ * Collaborative Whiteboard WebSocket server. Listens on ws://localhost:8080; clients
+ * connect, send draw events as JSON, and receive broadcasts from peers. See
+ * DrawEvent and RoomManager for the message protocol.
  */
 public class WhiteboardServer extends WebSocketServer {
 

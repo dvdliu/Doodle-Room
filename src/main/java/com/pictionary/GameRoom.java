@@ -21,16 +21,10 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
- * One Pictionary lobby/game. Owns the player list, lobby config, turn rotation,
- * word selection, drawing relay, chat/guess evaluation, hint scheduling, and scoring.
- *
- * Phase flow: LOBBY -&gt; PICKING_WORD -&gt; DRAWING -&gt; TURN_END -&gt; (next turn) ... -&gt; GAME_OVER.
- *
- * All state-mutating entry points are {@code synchronized} on the room instance so that
- * incoming WebSocket messages (handled on I/O threads) and scheduled timer callbacks
- * (handled on the shared scheduler) never race. Every scheduled callback also captures
- * a "turnToken" snapshot and re-checks it before acting, as a defense-in-depth against
- * a callback firing after its turn has already ended.
+ * One Pictionary lobby/game: owns the player list, lobby config, turn rotation, word
+ * selection, drawing relay, chat/guess evaluation, hint scheduling, and scoring. All
+ * state-mutating entry points are {@code synchronized} on the room instance so incoming
+ * messages and scheduled timer callbacks never race.
  */
 public class GameRoom {
 
