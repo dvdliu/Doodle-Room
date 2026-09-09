@@ -380,12 +380,18 @@
 </head>
 <body>
 
-<!-- JOIN MODAL -->
+<!-- MODE SELECT + JOIN MODAL -->
 <div class="modal-wrap" id="modal">
-  <div class="modal">
+  <div class="modal" id="mode-select-view">
+    <h2>Doodle Room</h2>
+    <p>Choose how you want to draw today.</p>
+    <button class="modal-btn" id="mode-freedraw-btn">🖌️ Free Draw</button>
+    <button class="modal-btn" id="mode-pictionary-btn" style="background:var(--c-teal)">Play Pictionary</button>
+  </div>
+  <div class="modal" id="join-view" style="display:none">
     <h2>Join the whiteboard</h2>
     <p>Enter your name to start drawing. Your color will be assigned automatically. Open this page in multiple tabs to collaborate.</p>
-    <input id="name-input" type="text" placeholder="Your name..." maxlength="24" autofocus />
+    <input id="name-input" type="text" placeholder="Your name..." maxlength="24" />
     <button class="modal-btn" id="join-btn">Join →</button>
     <div class="ws-note">Connects to ws://localhost:8080</div>
   </div>
@@ -851,6 +857,16 @@ function joinBoard() {
 
 $('join-btn').addEventListener('click', joinBoard);
 $('name-input').addEventListener('keydown', e => { if (e.key === 'Enter') joinBoard(); });
+
+// ── MODE SELECT ──
+$('mode-freedraw-btn').addEventListener('click', () => {
+  $('mode-select-view').style.display = 'none';
+  $('join-view').style.display = 'flex';
+  $('name-input').focus();
+});
+$('mode-pictionary-btn').addEventListener('click', () => {
+  window.location.href = 'pictionary.html';
+});
 </script>
 </body>
 </html>
