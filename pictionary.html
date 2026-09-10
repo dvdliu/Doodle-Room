@@ -918,6 +918,7 @@ function updateCanvasInteractivity() {
   wrap.classList.toggle('is-drawer', drawing);
   wrap.classList.toggle('not-drawer', !drawing);
   $('toolbar').classList.toggle('hidden-toolbar', !drawing);
+  resizeCanvas();
 }
 
 ['pen','line','eraser'].forEach(t => {
@@ -960,20 +961,21 @@ function getPos(e) {
 }
 
 function applyDraw(ev) {
+  const x = ev.x * canvas.width, y = ev.y * canvas.height;
   ctx.lineWidth = ev.brushSize || brushSize;
   ctx.strokeStyle = ev.color;
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
-  if (ev.startStroke) { ctx.beginPath(); ctx.moveTo(ev.x, ev.y); }
-  else { ctx.lineTo(ev.x, ev.y); ctx.stroke(); }
+  if (ev.startStroke) { ctx.beginPath(); ctx.moveTo(x, y); }
+  else { ctx.lineTo(x, y); ctx.stroke(); }
 }
 function applyLine(ev) {
   ctx.lineWidth = ev.brushSize;
   ctx.strokeStyle = ev.color;
   ctx.lineCap = 'round';
   ctx.beginPath();
-  ctx.moveTo(ev.x, ev.y);
-  ctx.lineTo(ev.x2, ev.y2);
+  ctx.moveTo(ev.x * canvas.width, ev.y * canvas.height);
+  ctx.lineTo(ev.x2 * canvas.width, ev.y2 * canvas.height);
   ctx.stroke();
 }
 
@@ -1000,7 +1002,7 @@ canvas.addEventListener('pointerdown', e => {
   const color = currentTool === 'eraser' ? '#ffffff' : currentColor;
   ctx.lineWidth = brushSize; ctx.strokeStyle = color; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   ctx.beginPath(); ctx.moveTo(pos.x, pos.y);
-  send({ type: 'DRAW', x: pos.x, y: pos.y, color, brushSize, startStroke: true });
+  send({ type: 'DRAW', x: pos.x / canvas.width, y: pos.y / canvas.height, color, brushSize, startStroke: true });
 });
 
 canvas.addEventListener('pointermove', e => {
@@ -1016,8 +1018,9 @@ canvas.addEventListener('pointermove', e => {
   }
 
   const color = currentTool === 'eraser' ? '#ffffff' : currentColor;
+  ctx.strokeStyle = color;
   ctx.lineTo(pos.x, pos.y); ctx.stroke();
-  send({ type: 'DRAW', x: pos.x, y: pos.y, color, brushSize, startStroke: false });
+  send({ type: 'DRAW', x: pos.x / canvas.width, y: pos.y / canvas.height, color, brushSize, startStroke: false });
 });
 
 canvas.addEventListener('pointerup', e => {
@@ -1027,8 +1030,8 @@ canvas.addEventListener('pointerup', e => {
   if (currentTool === 'line') {
     const pos = getPos(e);
     previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
-    applyLine({ x: lineStart.x, y: lineStart.y, x2: pos.x, y2: pos.y, color: currentColor, brushSize });
-    send({ type: 'LINE', x: lineStart.x, y: lineStart.y, x2: pos.x, y2: pos.y, color: currentColor, brushSize });
+    applyLine({ x: lineStart.x / canvas.width, y: lineStart.y / canvas.height, x2: pos.x / canvas.width, y2: pos.y / canvas.height, color: currentColor, brushSize });
+    send({ type: 'LINE', x: lineStart.x / canvas.width, y: lineStart.y / canvas.height, x2: pos.x / canvas.width, y2: pos.y / canvas.height, color: currentColor, brushSize });
     lineStart = null;
   }
 });
