@@ -254,19 +254,19 @@ public class GameRoom {
             wordOptions = WordBank.pickOptions(3, WordBank.ALL_CATEGORIES, Collections.emptyList(), Collections.emptySet());
         }
 
-        drawer.send(msg("WORD_OPTIONS", o -> {
-            JsonArray arr = new JsonArray();
-            for (String w : wordOptions) arr.add(w);
-            o.add("words", arr);
-            o.addProperty("secondsToChoose", WORD_PICK_SECONDS);
-        }).toString());
-
         broadcast(msg("TURN_START", o -> {
             o.addProperty("drawerId", drawer.getId());
             o.addProperty("drawerName", drawer.getName());
             o.addProperty("round", roundIndex + 1);
             o.addProperty("totalRounds", rounds);
         }));
+
+        drawer.send(msg("WORD_OPTIONS", o -> {
+            JsonArray arr = new JsonArray();
+            for (String w : wordOptions) arr.add(w);
+            o.add("words", arr);
+            o.addProperty("secondsToChoose", WORD_PICK_SECONDS);
+        }).toString());
 
         final int token = turnToken;
         pendingFutures.add(scheduler.schedule(() -> autoPickWord(token), WORD_PICK_SECONDS, TimeUnit.SECONDS));

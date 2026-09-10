@@ -158,9 +158,9 @@
   .tool-btn:hover { background: var(--surface2); color: var(--text); }
   .tool-btn.active { background: var(--surface2); color: var(--text); border-color: var(--border); }
   .tool-sep { width: 28px; height: 1px; background: var(--border); margin: 4px 0; }
-  .color-grid-mini { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; padding: 0 8px; }
+  .color-grid-mini { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 0 8px; }
   .color-swatch-mini { width: 100%; aspect-ratio: 1; border-radius: 5px; cursor: pointer; border: 2px solid transparent; }
-  .color-swatch-mini.active { border-color: #fff; }
+  .color-swatch-mini.active { border-color: #fff; box-shadow: 0 0 0 1px #888; }
   .brush-slider-mini { width: 44px; accent-color: var(--c-purple); }
 
   .center-col { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
@@ -360,12 +360,18 @@
     <button class="tool-btn" id="tool-clear" data-tip="Clear">🗑️</button>
     <div class="tool-sep"></div>
     <div class="color-grid-mini" id="color-grid">
-      <div class="color-swatch-mini active" style="background:#1a1a1e" data-color="#1a1a1e"></div>
+      <div class="color-swatch-mini active" style="background:#111111" data-color="#111111"></div>
+      <div class="color-swatch-mini" style="background:#ffffff;border-color:#555" data-color="#ffffff"></div>
       <div class="color-swatch-mini" style="background:#E24B4A" data-color="#E24B4A"></div>
       <div class="color-swatch-mini" style="background:#378ADD" data-color="#378ADD"></div>
-      <div class="color-swatch-mini" style="background:#639922" data-color="#639922"></div>
-      <div class="color-swatch-mini" style="background:#BA7517" data-color="#BA7517"></div>
-      <div class="color-swatch-mini" style="background:#7F77DD" data-color="#7F77DD"></div>
+      <div class="color-swatch-mini" style="background:#4CAF50" data-color="#4CAF50"></div>
+      <div class="color-swatch-mini" style="background:#F9C933" data-color="#F9C933"></div>
+      <div class="color-swatch-mini" style="background:#FF8C42" data-color="#FF8C42"></div>
+      <div class="color-swatch-mini" style="background:#C77DFF" data-color="#C77DFF"></div>
+      <div class="color-swatch-mini" style="background:#FF69B4" data-color="#FF69B4"></div>
+      <div class="color-swatch-mini" style="background:#26C6DA" data-color="#26C6DA"></div>
+      <div class="color-swatch-mini" style="background:#8B4513" data-color="#8B4513"></div>
+      <div class="color-swatch-mini" style="background:#888888" data-color="#888888"></div>
     </div>
     <div class="tool-sep"></div>
     <input type="range" class="brush-slider-mini" id="brush-slider" min="1" max="24" value="4" step="1" data-tip="Brush size" />
@@ -576,6 +582,7 @@ function onRoomState(ev) {
 function showScreen(which) {
   $('lobby-screen').toggleAttribute('hidden', which !== 'lobby');
   $('game-screen').toggleAttribute('hidden', which !== 'game');
+  if (which === 'game') resizeCanvas();
 }
 
 // ══════════════════════════ LOBBY ══════════════════════════
@@ -881,7 +888,7 @@ const wrap = $('canvas-wrap');
 const canvas = $('canvas');
 const ctx = canvas.getContext('2d');
 let currentTool = 'pen';
-let currentColor = '#1a1a1e';
+let currentColor = '#111111';
 let brushSize = 4;
 let isDrawingStroke = false;
 let lineStart = null;
