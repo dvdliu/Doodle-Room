@@ -1,4 +1,7 @@
 # Doodle Room
+
+*Written with the help of Claude.*
+
 A collaborate whiteboard made to draw with friends. This started as a free-draw whiteboard, and now also has a full skribbl.io-style **Pictionary game mode** — join a lobby with a room code, take turns drawing a chosen word while everyone else guesses in a chat, with close-guess hints and progressive letter reveals.
 
 On load, `index.html` asks which mode you want: **Free Draw** (the original whiteboard) or **Play Pictionary** (`pictionary.html`).
